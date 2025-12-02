@@ -1,10 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
   let buttons = document.querySelectorAll("[data-number]");
-  let userInput = [];
+  let userInput = "";
   buttons.forEach((btn) => {
     btn.addEventListener("click", (event) => {
-      let number = parseFloat(event.target.innerText);
-      userInput.push(number);
+      console.log(event);
+      let number = parseFloat(
+        event.currentTarget.dataset.number
+      );
+      userInput += number;
       addInput();
     });
   });
@@ -12,20 +15,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
   operands.forEach((btn) => {
     btn.addEventListener("click", (event) => {
-      let action = event.target.dataset.action;
+      let action = event.currentTarget.dataset.action;
 
       switch (action) {
         case "multiply":
-          userInput.push("*");
+          userInput += "*";
           break;
         case "divide":
-          userInput.push("/");
+          userInput += "/";
           break;
         case "add":
-          userInput.push("+");
+          userInput += "+";
           break;
         case "subtract":
-          userInput.push("-");
+          userInput += "-";
+          break;
+        case "clear":
+          userInput = "0";
+          break;
+        case "backspace":
+          userInput = "";
+          break;
+        case "decimal":
+          userInput += ".";
+          break;
+        case "equals":
+          userInput = eval(userInput);
           break;
       }
 
@@ -38,12 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function addInput() {
     console.log(userInput);
     let display = document.getElementById("display");
-    display.innerHTML = "";
-    userInput.forEach((el) => {
-      let span = document.createElement("span");
-
-      span.innerText = el;
-      display.appendChild(span);
-    });
+    display.innerText = userInput;
   }
 });
